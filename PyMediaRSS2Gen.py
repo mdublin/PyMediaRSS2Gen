@@ -163,7 +163,7 @@ class MediaThumbnail(object):
 
     def __repr__(self):
         """Return a nice string representation for prettier debugging."""
-        return "MediaThumbmail(url='%s', width='%s', height='%s')" % \
+        return "MediaThumbnail(url='%s', width='%s', height='%s')" % \
                (self.element_attrs.get('url', None),
                 self.element_attrs.get('height', None),
                 self.element_attrs.get('width', None))
