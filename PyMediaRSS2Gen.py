@@ -124,6 +124,52 @@ class MediaContent(object):
                 self.element_attrs.get('width', None))
 
 
+class MediaThumbnail(object):
+
+    """Publish a media:thumbnail element."""
+
+    element_attrs = None
+
+    def __init__(
+        self,
+        url=None,
+        height=None,
+        width=None,
+    ):
+        """Create a media:thumbnail element, args will be attributes."""
+        self.element_attrs = OrderedDict()
+
+        self._add_attribute('url', url)
+        self._add_attribute('height', height)
+        self._add_attribute('width', width)
+
+    def _add_attribute(self, name, value, allowed_values=None):
+        """Add an attribute to the MediaThumbnail element."""
+        if value and value != 'none':
+
+            if isinstance(value, (int, bool)):
+                value = str(value)
+
+            if allowed_values and value not in allowed_values:
+                raise TypeError(
+                    "Attribute '" + name + "' must be one of " + str(
+                        allowed_values) + " but is '" + str(value) + "'")
+
+            self.element_attrs[name] = value
+
+    def publish(self, handler):
+        """Publish the MediaThumbnail as XML."""
+        PyRSS2Gen._element(handler, "media:thumbnail", None, self.element_attrs)
+
+    def __repr__(self):
+        """Return a nice string representation for prettier debugging."""
+        return "MediaThumbmail(url='%s', width='%s', height='%s')" % \
+               (self.element_attrs.get('url', None),
+                self.element_attrs.get('height', None),
+                self.element_attrs.get('width', None))
+
+
+
 class MediaRSSItem(PyRSS2Gen.RSSItem, object):
 
     """Publish a Media RSS Item."""
@@ -139,6 +185,7 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
         media_group=None,
         # Allows grouping of <media:content> elements with the same content.
         media_content=None,  # can be used to publish any type of media.
+        media_thumbnail=None, # allows images to be used a representative images for media object
         media_player=None,
         # Allows a media object to be accessed through a web browser media
         # player console.
@@ -152,6 +199,7 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
         """Create a Media RSS item that contains args as elements."""
         self.media_group = media_group
         self.media_content = media_content
+        self.media_thumbnail = media_thumbnail
         self.media_player = media_player
         self.media_peerLink = media_peerLink
         self.media_location = media_location
@@ -172,10 +220,11 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
     def __repr__(self):
         """Return a nice string representation for prettier debugging."""
         return "MediaContent(title='%s', media_content='%s', " \
-               "media_group='%s', media_player='%s', media_peerLink='%s', " \
+               "media_group='%s', media_thumbnail='%s', media_player='%s', media_peerLink='%s', " \
                "media_location='%s')" % (
                    self.title,
                    str(self.media_content),
+                   str(self.Media_thumbnail),
                    str(self.media_group),
                    str(self.media_player),
                    str(self.media_peerLink),
@@ -196,6 +245,7 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
                 if ma.startswith('media_') and getattr(self, ma)])
            and not self.media_group
            and not self.media_content
+           and not self.media_thumbnail
            and not self.media_player
            and not self.media_peerLink
            and not self.media_location
@@ -243,3 +293,6 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
 
         if hasattr(self, 'media_text'):
             PyRSS2Gen._opt_element(handler, "media:text", self.media_text)
+
+        if hasattr(self, 'media_thumbnail'):
+            PyRSS2Gen._opt_element(handler, "media:thumbnail", self.media_thumbnail)
