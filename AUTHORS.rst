@@ -22,4 +22,5 @@ request.
 
 .. _Dirk Weise: http://www.dirk-weise.de/
 .. _Andrew Dalke: http://dalkescientific.com/
+.. _Matt Dublin: https://github.com/mdublin
 .. _PyRSS2Gen: https://pypi.python.org/pypi/PyRSS2Gen/

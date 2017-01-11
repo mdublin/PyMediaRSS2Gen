@@ -159,7 +159,11 @@ class MediaThumbnail(object):
 
     def publish(self, handler):
         """Publish the MediaThumbnail as XML."""
-        PyRSS2Gen._element(handler, "media:thumbnail", None, self.element_attrs)
+        PyRSS2Gen._element(
+            handler,
+            "media:thumbnail",
+            None,
+            self.element_attrs)
 
     def __repr__(self):
         """Return a nice string representation for prettier debugging."""
@@ -184,8 +188,8 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
         media_group=None,
         # Allows grouping of <media:content> elements with the same content.
         media_content=None,  # can be used to publish any type of media.
-        media_thumbnail=None, # allows images to be used a representative images for media object
-        media_keywords=None, # keywords as metadata associated with media object
+        media_thumbnail=None,  # allows images to be used a representative images for media object
+        media_keywords=None,  # keywords as metadata associated with media object
         media_player=None,
         # Allows a media object to be accessed through a web browser media
         # player console.
@@ -298,7 +302,9 @@ class MediaRSSItem(PyRSS2Gen.RSSItem, object):
             PyRSS2Gen._opt_element(handler, "media:text", self.media_text)
 
         if hasattr(self, 'media_thumbnail'):
-            PyRSS2Gen._opt_element(handler, "media:thumbnail", self.media_thumbnail)
+            PyRSS2Gen._opt_element(
+                handler, "media:thumbnail", self.media_thumbnail)
 
         if hasattr(self, 'media_keywords'):
-            PyRSS2Gen._opt_element(handler, "media:keywords", self.media_keywords)
+            PyRSS2Gen._opt_element(
+                handler, "media:keywords", self.media_keywords)
